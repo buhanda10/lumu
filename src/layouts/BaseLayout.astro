@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'LUMU — Votre colis, notre mission',
+  description = 'Service de livraison express à Kinshasa. Rapide, fiable, partout dans la ville.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://lumu.cd" />
+<meta property="og:locale" content="fr_CD" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<meta name="author" content="LUMU" />
+<meta name="keywords" content="livraison Kinshasa, coursier Kinshasa, livraison express RDC, LUMU" />
+  </head>
+  <body>
+        <!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader__inner">
+    <div class="loader__logo">LUMU<span class="dot">.</span></div>
+    <div class="loader__bar">
+      <div class="loader__bar-fill"></div>
+    </div>
+  </div>
+</div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <slot />
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor__dot"></div>
+      <div class="cursor__circle">
+        <span class="cursor__text" id="cursor-text"></span>
+      </div>
+      </div>
+
+    <!-- Scripts globaux -->
+    <script>
+      import '../scripts/lenis.js';
+      import '../scripts/animations.js';
+    </script>
+  </body>
+</html>
