@@ -1,8 +1,17 @@
 ---
 // Composant 3D : colis stylisé en Three.js
-// Désactivé sur mobile et si WebGL n'est pas dispo
+// On ne l'affiche JAMAIS sur mobile grâce au CSS ci-dessous
 ---
 
-<div class="scene-3d" id="scene-3d" aria-hidden="true">
+<div class="scene-3d hidden-mobile" id="scene-3d" aria-hidden="true">
   <canvas id="scene-3d-canvas"></canvas>
 </div>
+
+<style>
+  /* On cache la scène sur tous les écrans de moins de 1024px */
+  @media (max-width: 1023px) {
+    .hidden-mobile {
+      display: none !important;
+    }
+  }
+</style>

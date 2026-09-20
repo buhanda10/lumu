@@ -7,11 +7,11 @@ export function initScene3D() {
   if (!canvas || !container) return;
 
   // Désactive sur mobile et tablette
-  const isMobile = window.innerWidth < 1024;
-  if (isMobile) {
-    container.style.display = 'none';
-    return;
-  }
+  //const isMobile = window.innerWidth < 1024;
+  //if (isMobile) {
+    //container.style.display = 'none';
+   // return;
+ // }
 
   // Vérifie le support WebGL
   const testCanvas = document.createElement('canvas');
