@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
 
 const API_URL = import.meta.env.PUBLIC_LUMU_API_URL;
 ---
@@ -8,37 +9,7 @@ const API_URL = import.meta.env.PUBLIC_LUMU_API_URL;
   title="Suivi de colis — LUMU"
   description="Suivez votre colis LUMU en temps réel. Entrez votre numéro de suivi pour connaître le statut de votre livraison à Kinshasa."
 >
-  <header id="navbar" class="navbar">
-    <div class="container navbar__inner">
-      <a href="/" class="navbar__logo">LUMU<span class="dot">.</span></a>
-      <nav class="navbar__links">
-        <a href="/#services">Services</a>
-        <a href="/#process">Fonctionnement</a>
-        <a href="/#zones">Zones</a>
-        <a href="/suivi" class="is-active">Suivi</a>
-        <a href="/#contact">Contact</a>
-      </nav>
-      <a href="/#contact" class="btn btn-primary navbar__cta" data-cursor-text="Devis">Devis</a>
-      <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- MENU MOBILE -->
-  <div class="mobile-menu" id="mobile-menu">
-    <nav class="mobile-menu__nav">
-      <a href="/#services" data-menu-link>Services</a>
-      <a href="/#process" data-menu-link>Fonctionnement</a>
-      <a href="/#zones" data-menu-link>Zones</a>
-      <a href="/suivi" data-menu-link>Suivi</a>
-      <a href="/#contact" data-menu-link>Contact</a>
-    </nav>
-    <div class="mobile-menu__footer">
-      <a href="https://wa.me/243858814961" target="_blank" rel="noopener" class="btn btn-primary">WhatsApp</a>
-    </div>
-  </div>
+  <Navbar />
 
   <main class="tracking-page">
     <section class="section tracking-hero">
@@ -118,6 +89,27 @@ const API_URL = import.meta.env.PUBLIC_LUMU_API_URL;
               </div>
             </div>
           </div>
+          <div class="tracking-actions">
+  <button type="button" class="btn btn-outline tracking-copy" id="tracking-copy" data-cursor-text="Copier">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+    <span id="tracking-copy-label">Copier le lien de suivi</span>
+  </button>
+  <a
+    href="#"
+    class="btn btn-outline tracking-whatsapp"
+    id="tracking-whatsapp"
+    target="_blank"
+    rel="noopener"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    </svg>
+    Partager sur WhatsApp
+  </a>
+</div>
 
           <div class="tracking-timeline">
             <h3 class="tracking-timeline__title">Historique</h3>
@@ -133,6 +125,28 @@ const API_URL = import.meta.env.PUBLIC_LUMU_API_URL;
 
   <!-- Données pour le script -->
   <script define:vars={{ API_URL }}>
-    window.LUMU_API_URL = API_URL;
-  </script>
+  window.LUMU_API_URL = API_URL;
+</script>
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import '../scripts/lenis.js';
+  import { initCursor } from '../scripts/cursor.js';
+  import { initTracking } from '../scripts/tracking.js';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Connexion Lenis × GSAP
+  const lenis = window.lenis;
+  if (lenis) {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initCursor();
+    initTracking();
+  });
+</script>
 </BaseLayout>

@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@splinetool/runtime": "^2.0.55",
     "astro": "^7.3.3",
     "gsap": "^3.15.0",

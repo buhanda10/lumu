@@ -222,8 +222,25 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 768px) {
   .navbar__links { display: none; }
+  .navbar__cta { display: none; }
+  .theme-toggle:not(.theme-toggle--mobile) { display: none; }
+  .burger { display: block; }
 }
 
+
+.navbar__links a.is-active {
+  color: var(--accent);
+  position: relative;
+}
+.navbar__links a.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--accent);
+}
 /* ============================
    HERO
    ============================ */
@@ -997,6 +1014,9 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .theme-toggle { display: none; } /* optionnel : cache sur mobile */
 }
+.theme-toggle--mobile {
+  display: flex !important;
+}
 
 /* ============================
    SCÈNE 3D
@@ -1579,4 +1599,71 @@ img { max-width: 100%; display: block; }
   .tracking-timeline {
     padding: 24px;
   }
+}
+
+.tracking-timeline__list {
+  --line-progress: 1;
+}
+.tracking-timeline__list::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 12px;
+  width: 2px;
+  height: calc(100% - 24px);
+  background: var(--accent);
+  transform-origin: top center;
+  transform: scaleY(var(--line-progress, 1));
+  z-index: 0;
+}
+
+.tracking-timeline__list::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 12px;
+  width: 2px;
+  height: calc(100% - 24px);
+  background: var(--border);
+  z-index: -1;
+}
+
+.tracking-timeline {
+  position: relative;
+}
+.tracking-timeline__list {
+  position: relative;
+}
+.timeline-item {
+  position: relative;
+  z-index: 1;
+}
+
+/* Actions sous le résumé */
+.tracking-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: -24px;
+  margin-bottom: 48px;
+}
+.tracking-actions .btn {
+  font-size: 0.9rem;
+  padding: 12px 20px;
+}
+
+@media (max-width: 640px) {
+  .tracking-actions {
+    flex-direction: column;
+    margin-top: -16px;
+  }
+  .tracking-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }

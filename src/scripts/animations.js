@@ -491,24 +491,27 @@ ${message}`;
 // 12. THEME TOGGLE — Dark / Light
 // ============================================================
 function initThemeToggle() {
-  const toggle = document.querySelector('#theme-toggle');
-  if (!toggle) return;
+  const toggles = document.querySelectorAll('#theme-toggle, #theme-toggle-mobile');
+  if (toggles.length === 0) return;
 
   const root = document.documentElement;
   const stored = localStorage.getItem('lumu-theme');
 
-  // Applique le thème stocké ou celui du système
   if (stored) {
     root.setAttribute('data-theme', stored);
   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     root.setAttribute('data-theme', 'dark');
   }
 
-  toggle.addEventListener('click', () => {
+  const handler = () => {
     const current = root.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem('lumu-theme', next);
+  };
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', handler);
   });
 }
 
@@ -577,6 +580,35 @@ function initLoader() {
     }, 400);
   });
 }
+
+// Gestion du scroll vers ancre au chargement (compatible Lenis)
+if (window.location.hash && window.lenis) {
+  const target = document.querySelector(window.location.hash);
+  if (target) {
+    setTimeout(() => {
+      window.lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+    }, 500);
+  }
+}
+// Intercepte les clics sur les ancres pour Lenis
+document.querySelectorAll('a[href*="#"]').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // Cas : lien externe + ancre (/#services depuis /suivi) → laisse le navigateur faire
+    if (href.startsWith('/#') && window.location.pathname !== '/') return;
+
+    // Cas : ancre simple (#services) → scroll Lenis
+    if (href.startsWith('#') && window.lenis) {
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        window.lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+      }
+    }
+  });
+});
 // ============================================================
 // INIT GLOBAL
 // ============================================================
