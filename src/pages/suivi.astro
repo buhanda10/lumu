@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const API_URL = import.meta.env.PUBLIC_LUMU_API_URL;
+---
+
+<BaseLayout
+  title="Suivi de colis — LUMU"
+  description="Suivez votre colis LUMU en temps réel. Entrez votre numéro de suivi pour connaître le statut de votre livraison à Kinshasa."
+>
+  <header id="navbar" class="navbar">
+    <div class="container navbar__inner">
+      <a href="/" class="navbar__logo">LUMU<span class="dot">.</span></a>
+      <nav class="navbar__links">
+        <a href="/#services">Services</a>
+        <a href="/#process">Fonctionnement</a>
+        <a href="/#zones">Zones</a>
+        <a href="/suivi" class="is-active">Suivi</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <a href="/#contact" class="btn btn-primary navbar__cta" data-cursor-text="Devis">Devis</a>
+      <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <div class="mobile-menu" id="mobile-menu">
+    <nav class="mobile-menu__nav">
+      <a href="/#services" data-menu-link>Services</a>
+      <a href="/#process" data-menu-link>Fonctionnement</a>
+      <a href="/#zones" data-menu-link>Zones</a>
+      <a href="/suivi" data-menu-link>Suivi</a>
+      <a href="/#contact" data-menu-link>Contact</a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <a href="https://wa.me/243858814961" target="_blank" rel="noopener" class="btn btn-primary">WhatsApp</a>
+    </div>
+  </div>
+
+  <main class="tracking-page">
+    <section class="section tracking-hero">
+      <div class="container">
+        <span class="section-label">Suivi de colis</span>
+        <h1>Où est mon colis<span class="dot">?</span></h1>
+        <p class="section-intro">
+          Entrez votre numéro de suivi LUMU pour connaître le statut de votre livraison en temps réel.
+        </p>
+
+        <form class="tracking-form" id="tracking-form" novalidate>
+          <div class="tracking-form__field">
+            <input
+              type="text"
+              id="tracking-input"
+              placeholder="LUMU-2026-0001"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="submit" class="btn btn-primary tracking-form__submit" data-cursor-text="Suivre">
+              Suivre
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+          <p class="tracking-form__hint">
+            Le numéro commence par <strong>LUMU-</strong> suivi de l'année et d'un compteur.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Zone de résultat -->
+    <section class="section tracking-result" id="tracking-result" hidden>
+      <div class="container">
+
+        <!-- État : chargement -->
+        <div class="tracking-state" id="tracking-loading" hidden>
+          <div class="tracking-loading__spinner"></div>
+          <p>Recherche de votre colis<span class="dot">.</span></p>
+        </div>
+
+        <!-- État : erreur -->
+        <div class="tracking-state tracking-state--error" id="tracking-error" hidden>
+          <div class="tracking-error__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h3 id="tracking-error-title">Numéro introuvable</h3>
+          <p id="tracking-error-message">
+            Vérifiez le numéro et réessayez, ou contactez-nous sur WhatsApp.
+          </p>
+          <a href="https://wa.me/243858814961" target="_blank" rel="noopener" class="btn btn-outline">
+            Contacter LUMU
+          </a>
+        </div>
+
+        <!-- État : succès -->
+        <div class="tracking-state tracking-state--success" id="tracking-success" hidden>
+          <div class="tracking-summary">
+            <div class="tracking-summary__left">
+              <span class="tracking-summary__label">Colis</span>
+              <div class="tracking-summary__numero" id="tracking-numero">LUMU-2026-0001</div>
+              <div class="tracking-summary__client">
+                Destinataire : <span id="tracking-client">—</span>
+              </div>
+            </div>
+            <div class="tracking-summary__right">
+              <span class="tracking-summary__label">Statut actuel</span>
+              <div class="tracking-badge" id="tracking-badge" data-statut="pending">
+                <span class="tracking-badge__icon" id="tracking-badge-icon"></span>
+                <span class="tracking-badge__text" id="tracking-badge-text">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tracking-timeline">
+            <h3 class="tracking-timeline__title">Historique</h3>
+            <ol class="tracking-timeline__list" id="tracking-timeline-list">
+              <!-- Rempli en JS -->
+            </ol>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Données pour le script -->
+  <script define:vars={{ API_URL }}>
+    window.LUMU_API_URL = API_URL;
+  </script>
+</BaseLayout>
